@@ -1,7 +1,7 @@
 'use strict'
 const path = require('path')
 const defaultSettings = require('./src/settings.js')
-const serverAddress = 'http://192.168.1.17:4000'
+const serverAddress = 'http://192.168.1.6:4000'
 function resolve(dir) {
   return path.join(__dirname, dir)
 }

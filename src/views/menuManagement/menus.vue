@@ -54,8 +54,9 @@ export default {
       columns: [
         { title: "菜单名称", dataIndex: "name", key: "name", align: "left" },
         { title: "菜单ID", dataIndex: "id", key: "id" },
-        { title: "父级菜单", dataIndex: "parentId", key: "parentId" },
+        // { title: "父级菜单", dataIndex: "parentId", key: "parentId" },
         { title: "类型", scopedSlots: { customRender: "type" } },
+        { title: "路由地址", key: "routeUrl", dataIndex: "routeUrl" },
         { title: "资源路径", dataIndex: "url", key: "url" },
         { title: "排序号", dataIndex: "sort", key: "sort" },
         { title: "创建时间", dataIndex: "create_time", key: "dataIndex" },
