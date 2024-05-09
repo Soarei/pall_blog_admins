@@ -85,17 +85,17 @@ export default {
     return {
       list: null,
       columns: [
-        {
-          title: "ID",
-          dataIndex: "article_id",
-          key: "article_id",
-          width: 50,
-        },
+        // {
+        //   title: "ID",
+        //   dataIndex: "article_id",
+        //   key: "article_id",
+        //   width: 50,
+        // },
         {
           title: "创建时间",
           dataIndex: "release_time",
           key: "release_time",
-          width: 100,
+          width: 150,
         },
         // {
         //   title: "文章封面",
@@ -134,16 +134,13 @@ export default {
         },
         {
           title: "状态",
-          dataIndex: "status",
-          key: "status",
           width: 100,
           scopedSlots: { customRender: "status" },
         },
         {
           title: "操作",
           scopedSlots: { customRender: "action" },
-          width: 150,
-          fixed: "right",
+          width: 100,
         },
       ],
       pagination: {

@@ -9,17 +9,17 @@ export function getArticleList(data) {
 }
 
 // 添加文章接口
-export function addArticle(data){
+export function addArticle(data) {
   return request({
     url: '/admin/article/add',
-    method:'post',
+    method: 'post',
     data
   })
 }
 
 // 更新文章接口
 
-export function updateArticle(data){
+export function updateArticle(data) {
   return request({
     url: '/admin/article/edit',
     method: 'post',
@@ -28,9 +28,9 @@ export function updateArticle(data){
 }
 
 // 删除文章接口
-export function delArticle(data){
+export function delArticle(data) {
   return request({
-    url:'/admin/article/del',
+    url: '/admin/article/del',
     method: 'post',
     data
   })
@@ -38,12 +38,12 @@ export function delArticle(data){
 
 // 上传文章标题接口
 
-export function upload(data){
+export function upload(data) {
   return request({
-    url:'/admin/upload/images',
-    method:'post',
-    headers:{
-      "Content-Type":"multipart/form-data;boundary = boundary",
+    url: '/admin/upload/uploadFile',
+    method: 'post',
+    headers: {
+      "Content-Type": "multipart/form-data;boundary = boundary",
     },
     data
   })

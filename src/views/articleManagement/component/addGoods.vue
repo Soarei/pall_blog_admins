@@ -54,7 +54,7 @@
               <el-upload
                 class="upload-demo"
                 drag
-                action="/api/admin/upload/images"
+                action="/api/admin/upload/uploadFile"
                 ref="uploadImg"
                 :headers="headers"
                 name="file"

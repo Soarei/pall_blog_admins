@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: '中药材后台管理系统',
+  title: '后台管理系统',
 
   /**
    * @type {boolean} true | false
@@ -13,5 +13,5 @@ module.exports = {
    * @description Whether show the logo in sidebar
    */
   sidebarLogo: false,
-  tagsView:false
+  tagsView: false
 }
