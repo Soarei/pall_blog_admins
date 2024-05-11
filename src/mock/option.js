@@ -1,7 +1,7 @@
-export function getLineOption(){
+export function getLineOption() {
   return {
-    title:{
-      text:'月到课率和缺课率'
+    title: {
+      text: '月到课率和缺课率'
     },
     tooltip: {
       trigger: "axis",
@@ -26,7 +26,7 @@ export function getLineOption(){
     xAxis: [
       {
         type: "category",
-        data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun","Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+        data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
         axisPointer: {
           type: "shadow",
         },
@@ -76,49 +76,21 @@ export function getLineOption(){
 }
 
 
-export function getSaleLine(){
+export function getSaleLine() {
   return {
-    legend: {},
-    tooltip: {
-      trigger: 'axis',
-      showContent: false
+    xAxis: {
+      type: 'category',
+      data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
     },
-    dataset: {
-      source: [
-        ['product', '2012', '2013', '2014', '2015', '2016', '2017'],
-        ['Milk Tea', 56.5, 82.1, 88.7, 70.1, 53.4, 85.1],
-        ['Matcha Latte', 51.1, 51.4, 55.1, 53.3, 73.8, 68.7],
-        ['Cheese Cocoa', 40.1, 62.2, 69.5, 36.4, 45.2, 32.5],
-        ['Walnut Brownie', 25.2, 37.1, 41.2, 18, 33.9, 49.1]
-      ]
+    yAxis: {
+      type: 'value'
     },
-    xAxis: { type: 'category' },
-    yAxis: { gridIndex: 0 },
     series: [
       {
+        data: [820, 982, 961, 934, 1290, 1330, 1320],
         type: 'line',
-        smooth: true,
-        seriesLayoutBy: 'row',
-        emphasis: { focus: 'series' }
-      },
-      {
-        type: 'line',
-        smooth: true,
-        seriesLayoutBy: 'row',
-        emphasis: { focus: 'series' }
-      },
-      {
-        type: 'line',
-        smooth: true,
-        seriesLayoutBy: 'row',
-        emphasis: { focus: 'series' }
-      },
-      {
-        type: 'line',
-        smooth: true,
-        seriesLayoutBy: 'row',
-        emphasis: { focus: 'series' }
-      },
+        smooth: true
+      }
     ]
   };
 }

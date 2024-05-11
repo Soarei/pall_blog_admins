@@ -1,14 +1,14 @@
 import { logout, getInfo } from '@/api/user'
-import { getToken, setToken, removeToken,setUserInfo,setUserMenus,getUserMenus,clearUserMenus } from '@/utils/auth'
-import { resetRouter,constantRoutes } from '@/router'
-import {pallLogin,getUserInfo} from '@/api/login'
+import { getToken, setToken, removeToken, setUserInfo, setUserMenus, getUserMenus, clearUserMenus, getUserInfoStore } from '@/utils/auth'
+import { resetRouter, constantRoutes } from '@/router'
+import { pallLogin, getUserInfo } from '@/api/login'
 import Layout from '@/layout'
 const getDefaultState = () => {
   return {
     token: getToken(),
-    user_info:null,
+    user_info: getUserInfoStore(),
     addRoutes: [],
-    routes:[]
+    routes: []
   }
 }
 
@@ -22,10 +22,10 @@ const mutations = {
     state.token = token
     setToken(token)
   },
-  SET_USERINFO:(state,userinfo) => {
+  SET_USERINFO: (state, userinfo) => {
     state.user_info = userinfo
   },
-  SET_ROUTES:(state,routes) =>{
+  SET_ROUTES: (state, routes) => {
     state.addRoutes = routes
     state.routes = constantRoutes.concat(routes)
   },
@@ -64,7 +64,7 @@ const actions = {
   login({ commit }, userInfo) {
     const { user_account, password } = userInfo
     return new Promise((resolve, reject) => {
-      pallLogin({ user_account: user_account.trim(), password}).then(response => {
+      pallLogin({ user_account: user_account.trim(), password }).then(response => {
         const data = response.data
         commit('SET_TOKEN', data.jwt)
         commit('SET_USERINFO', data.user_info)
@@ -83,7 +83,7 @@ const actions = {
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
       getUserInfo().then(response => {
-        const data  = response.result
+        const data = response.result
         if (!data) {
           return reject('Verification failed, please Login again.')
         }
@@ -130,7 +130,7 @@ const actions = {
           }
           if (item.parentId == 0) {
             item.component = Layout
-          }else{
+          } else {
             item.component = (reslove) => require([`@/views/${item.url}`], reslove)
           }
         })

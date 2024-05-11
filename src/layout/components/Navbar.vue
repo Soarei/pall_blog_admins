@@ -1,20 +1,26 @@
 <template>
   <div class="navbar">
-    <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
-    <breadcrumb class="breadcrumb-container"/>
+    <hamburger
+      :is-active="sidebar.opened"
+      class="hamburger-container"
+      @toggleClick="toggleSideBar"
+    />
+    <breadcrumb class="breadcrumb-container" />
     <div class="right-menu">
       <span class="lopper"><i class="el-icon-sort"></i></span>
       <span class="lopper"><i class="el-icon-refresh"></i></span>
-      <span class="lopper" @click="screenFullBig" style="cursor: pointer;"><i class="el-icon-full-screen"></i></span>
+      <span class="lopper" @click="screenFullBig" style="cursor: pointer"
+        ><i class="el-icon-full-screen"></i
+      ></span>
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img :src="user_info.user_avatar" class="user-avatar">
+          <img :src="user_info.user_avatar" class="user-avatar" />
           <!-- <i class="el-icon-arrow-down el-icon--right" /> -->
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
           <router-link to="/">
             <el-dropdown-item divided @click.native="logout">
-              <span style="display:block;">Log Out</span>
+              <span style="display: block">Log Out</span>
             </el-dropdown-item>
           </router-link>
         </el-dropdown-menu>
@@ -24,62 +30,59 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import Breadcrumb from '@/components/Breadcrumb'
-import Hamburger from '@/components/Hamburger'
-import { removeToken,getUserInfo } from '@/utils/auth'
-import screenfull from "screenfull"
+import { mapGetters } from "vuex";
+import Breadcrumb from "@/components/Breadcrumb";
+import Hamburger from "@/components/Hamburger";
+import { getUserInfoStore } from "@/utils/auth";
+import screenfull from "screenfull";
 export default {
   components: {
     Breadcrumb,
-    Hamburger
+    Hamburger,
   },
-  data(){
+  data() {
     return {
-      activeIndex:"1",
-      user_info:JSON.parse(getUserInfo()),
-      isFullFlag:false
-    }
+      activeIndex: "1",
+      isFullFlag: false,
+    };
   },
   computed: {
-    ...mapGetters([
-      'sidebar',
-    ])
+    ...mapGetters(["sidebar", "user_info"]),
   },
   methods: {
     toggleSideBar() {
-      this.$store.dispatch('app/toggleSideBar')
+      this.$store.dispatch("app/toggleSideBar");
     },
     logout() {
-      this.$store.dispatch('user/logout')
-      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+      this.$store.dispatch("user/logout");
+      this.$router.push(`/login?redirect=${this.$route.fullPath}`);
     },
-    handleSelect(key,path){
-      console.log(key,path);
+    handleSelect(key, path) {
+      console.log(key, path);
     },
     // 全屏显示
-    screenFullBig(){
+    screenFullBig() {
       if (!screenfull.enabled) {
         this.$message({
-          message: 'you browser can not work',
-          type: 'warning'
-        })
-        return false
+          message: "you browser can not work",
+          type: "warning",
+        });
+        return false;
       }
-      screenfull.toggle()
-    }
+      screenfull.toggle();
+    },
   },
-  mounted(){
-    	// 监听页面全屏
-		window.addEventListener("fullscreenchange", (e)=> {
-		  if(screenfull.isFullscreen){
-			this.isFullFlag = true
-		  }else{
-			this.isFullFlag = false
-		  }
-		})
-  }
-}
+  mounted() {
+    // 监听页面全屏
+    window.addEventListener("fullscreenchange", (e) => {
+      if (screenfull.isFullscreen) {
+        this.isFullFlag = true;
+      } else {
+        this.isFullFlag = false;
+      }
+    });
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -88,18 +91,18 @@ export default {
   overflow: hidden;
   position: relative;
   background: #fff;
-  box-shadow: 0 1px 4px rgba(0,21,41,.08);
+  box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
 
   .hamburger-container {
     line-height: 46px;
     height: 100%;
     float: left;
     cursor: pointer;
-    transition: background .3s;
-    -webkit-tap-highlight-color:transparent;
+    transition: background 0.3s;
+    -webkit-tap-highlight-color: transparent;
 
     &:hover {
-      background: rgba(0, 0, 0, .025)
+      background: rgba(0, 0, 0, 0.025);
     }
   }
 
@@ -120,7 +123,7 @@ export default {
     &:focus {
       outline: none;
     }
-    .lopper{
+    .lopper {
       width: 40px;
       height: 40px;
       display: inline-block;
@@ -138,10 +141,10 @@ export default {
 
       &.hover-effect {
         cursor: pointer;
-        transition: background .3s;
+        transition: background 0.3s;
 
         &:hover {
-          background: rgba(0, 0, 0, .025)
+          background: rgba(0, 0, 0, 0.025);
         }
       }
     }
