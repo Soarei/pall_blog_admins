@@ -58,7 +58,7 @@
           </div>
           <div class="recent_list">
             <a-card title="今日计划">
-              <a-radio-group v-model="value" @change="onChange">
+              <a-radio-group v-model="value">
                 <a-radio
                   :style="radioStyle"
                   v-for="item in 10"
@@ -72,7 +72,7 @@
           </div>
           <div class="recent_reply">
             <a-card title="最近收到的回复">
-              <a-radio-group v-model="value" @change="onChange">
+              <a-radio-group v-model="value">
                 <a-radio
                   :style="radioStyle"
                   v-for="item in 10"

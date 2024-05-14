@@ -5,118 +5,106 @@
     </div>
     <!-- 内容 -->
     <div class="content">
-      <el-form
-        :model="addGoodsForm"
-        status-icon
-        ref="addGoodsForm"
-        label-width="150px"
-        class="demo-ruleForm"
-        :rules="addGoodsRules"
+      <a-form
+        :form="addGoodsForm"
+        :label-col="{ span: 5 }"
+        :wrapper-col="{ span: 12 }"
+        @submit="submitForm"
+        ref="form"
       >
-        <el-row>
-          <el-col :span="2"></el-col>
-          <el-col :span="22">
-            <el-form-item label="文章分类" prop="catgory_id">
-              <el-select
-                v-model="addGoodsForm.catgory_id"
-                placeholder="请选择"
-                style="width: 100%"
-              >
-                <el-option
-                  v-for="item in categoryList"
-                  :key="item.catgory_id"
-                  :label="item.catgory_name"
-                  :value="item.catgory_id"
-                >
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="文章标签" prop="catgory_id">
-              <el-select
-                v-model="addGoodsForm.tags"
-                placeholder="请选择"
-                style="width: 100%"
-                multiple
-              >
-                <el-option
-                  v-for="item in labelList"
-                  :key="item.id"
-                  :label="item.label_name"
-                  :value="String(item.id)"
-                >
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="文章标题" prop="article_title">
-              <el-input v-model="addGoodsForm.article_title"></el-input>
-            </el-form-item>
-            <el-form-item label="文章封面" prop="article_title">
-              <el-upload
-                class="upload-demo"
-                drag
-                action="/api/admin/upload/uploadFile"
-                ref="uploadImg"
-                :headers="headers"
-                name="file"
-                :file-list="fileList"
-                :on-success="handleUploadChange"
-                :limit="1"
-                list-type="picture"
-              >
-                <i class="el-icon-upload"></i>
-                <div class="el-upload__text">
-                  将文件拖到此处，或<em>点击上传</em>
-                </div>
-                <div class="el-upload__tip" slot="tip">
-                  只能上传jpg/png文件，且不超过500kb
-                </div>
-              </el-upload>
-            </el-form-item>
-            <el-form-item label="推荐等级" prop="level">
-              <el-radio-group v-model="addGoodsForm.level">
-                <el-radio :label="0">一级推荐</el-radio>
-                <el-radio :label="1">二级推荐</el-radio>
-                <el-radio :label="2">三级推荐</el-radio>
-                <el-radio :label="3">四级推荐</el-radio>
-              </el-radio-group>
-            </el-form-item>
-            <el-form-item label="发布时间" prop="release_time">
-              <el-date-picker
-                v-model="addGoodsForm.release_time"
-                type="datetime"
-                placeholder="选择日期时间"
-                style="width: 60%"
-              >
-              </el-date-picker>
-            </el-form-item>
-            <el-form-item label="文章内容" prop="article_content">
-              <div style="border: 1px solid #ccc">
-                <Toolbar
-                  style="border-bottom: 1px solid #ccc"
-                  :editor="editor"
-                  :defaultConfig="toolbarConfig"
-                  :mode="mode"
-                />
-                <Editor
-                  style="height: 600px; overflow-y: hidden"
-                  v-model="addGoodsForm.article_content"
-                  :defaultConfig="editorConfig"
-                  :mode="mode"
-                  @onCreated="onCreated"
-                />
-              </div>
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </el-form>
-      <div class="mySubmit">
-        <el-button @click="submitForm" type="primary" class="saveGoods"
-          >保存文章</el-button
-        >
-        <el-button @click="cancelForm" type="info" class="cancelGoods"
-          >取消</el-button
-        >
-      </div>
+        <a-form-item label="文章分类">
+          <a-select
+            v-model="addGoodsForm.catgory_id"
+            placeholder="请选择文章分类"
+            style="width: 100%"
+          >
+            <a-select-option
+              v-for="item in categoryList"
+              :key="item.catgory_id"
+              :value="item.catgory_id"
+            >
+              {{ item.catgory_name }}</a-select-option
+            >
+          </a-select>
+        </a-form-item>
+        <a-form-item label="标签">
+          <a-select
+            mode="multiple"
+            v-model="addGoodsForm.tags"
+            placeholder="请选择标签"
+            style="width: 100%"
+          >
+            <a-select-option
+              v-for="item in labelList"
+              :key="item.id"
+              :value="item.id"
+            >
+              {{ item.label_name }}</a-select-option
+            >
+          </a-select>
+        </a-form-item>
+        <a-form-item label="文章标题">
+          <a-input
+            v-model="addGoodsForm.article_title"
+            placeholder="请输入文章标题"
+          ></a-input>
+        </a-form-item>
+        <a-form-item label="文章封面">
+          <a-upload-dragger
+            name="file"
+            :multiple="false"
+            action="/api/admin/upload/uploadFile"
+            :headers="headers"
+            @change="handleChange"
+            @preview="handlePreview"
+          >
+            <p class="ant-upload-drag-icon">
+              <a-icon type="inbox" />
+            </p>
+            <p class="ant-upload-text">单击或拖动文件到此区域进行上传</p>
+            <p class="ant-upload-hint">
+              支持单次或批量上传。严禁 上传公司数据或其他波段文件
+            </p>
+          </a-upload-dragger>
+        </a-form-item>
+        <!-- 发布时间 -->
+        <a-form-item label="发布时间">
+          <a-date-picker
+            @change="onChange"
+            v-model="addGoodsForm.release_time"
+            style="width: 100%"
+            :locale="locale"
+            format="YYYY-MM-DD HH:mm:ss"
+          />
+        </a-form-item>
+        <!-- 推荐等级 -->
+        <a-form-item label="推荐等级">
+          <a-rate v-model="addGoodsForm.level" :count="4" />
+        </a-form-item>
+        <a-form-item label="文章内容">
+          <div style="border: 1px solid #ccc">
+            <Toolbar
+              style="border-bottom: 1px solid #ccc"
+              :editor="editor"
+              :defaultConfig="toolbarConfig"
+              :mode="mode"
+            />
+            <Editor
+              style="height: 300px; overflow-y: hidden"
+              v-model="addGoodsForm.article_content"
+              :defaultConfig="editorConfig"
+              :mode="mode"
+              @onCreated="onCreated"
+            />
+          </div>
+        </a-form-item>
+        <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
+          <a-button type="primary" html-type="submit"> 确认发布 </a-button>
+          <a-button type="info" style="margin-left: 20px" @click="cancelForm">
+            返回文章
+          </a-button>
+        </a-form-item>
+      </a-form>
     </div>
   </div>
 </template>
@@ -129,6 +117,7 @@ import { getToken } from "@/utils/auth";
 import { addArticle, updateArticle } from "@/api/pall_article";
 import { getAllLabels } from "@/api/specfation";
 import { getCategoryList } from "@/api/category";
+import locale from "ant-design-vue/es/date-picker/locale/zh_CN";
 export default {
   components: { ImgListElement, ImgListElementLast, Editor, Toolbar },
   props: {
@@ -141,6 +130,7 @@ export default {
   },
   data() {
     return {
+      locale,
       activeName: "first",
       addGoodsForm: {
         level: 0,
@@ -208,6 +198,9 @@ export default {
     }, 1500);
   },
   methods: {
+    onChange(val) {
+      console.log(val);
+    },
     // 获取商品分类列表
     getCategoryList() {
       getCategoryList(this.listQuery).then((res) => {
@@ -243,38 +236,6 @@ export default {
       // let idx = this.fileList.findIndex((item) => item.uid == file.uid)
       // this.fileList.splice(idx, 1)
     },
-    handlePreview(file) {
-      console.log(file);
-      // this.dialogImageUrl = file.url;
-      // this.dialogVisible = true;
-    },
-    // submitForm() {
-    //   this.$confirm('您确认保存文章吗?', '提示', {
-    //     confirmButtonText: '确定',
-    //     cancelButtonText: '取消',
-    //     type: 'success'
-    //   }).then(() => {
-    //     this.addGoodsForm.tags = this.addGoodsForm.tags.join()
-    //     this.$refs['addGoodsForm'].validate(vaild => {
-    //       if (vaild) {
-    //         this.dialogVisible = true
-    //         if(this.addGoodsForm.article_id){
-    //           updateArticle(this.addGoodsForm).then(res=>{
-    //             this.$message.success(res.message)
-    //             this.dialogVisible = false
-    //           })
-    //         }else{
-    //            addArticle(this.addGoodsForm).then(res=>{
-    //             this.$message.success(res.message)
-    //             this.dialogVisible = false
-    //            })
-    //         }
-    //       }
-    //     })
-    //   }).catch((err) => {
-    //     this.$message.info('取消文章添加')
-    //   })
-    // },
     submitForm() {
       let _this = this;
       _this.$antconfirm({
@@ -283,7 +244,6 @@ export default {
         okText: "确定",
         cancelText: "取消",
         onOk() {
-          _this.addGoodsForm.tags = _this.addGoodsForm.tags.join();
           if (_this.addGoodsForm.article_id) {
             updateArticle(_this.addGoodsForm).then((res) => {
               _this.$antmessage.success(res.message);
@@ -304,9 +264,19 @@ export default {
       this.$emit("closeDialog");
     },
     // 级联选择框
-    handleChange(val) {
-      this.addGoodsForm.sort = val[val.length - 1];
+    handleChange(info) {
+      const status = info.file.status;
+      if (status !== "uploading") {
+        console.log(info.file, info.fileList);
+      }
+      if (status === "done") {
+        const { url } = info.file.response.data;
+        this.addGoodsForm.article_cover = url;
+      } else if (status === "error") {
+        this.$message.error(`${info.file.name} 文件上传失败`);
+      }
     },
+    handlePreview(file) {},
     // 富文本编辑器相关
     onCreated(editor) {
       this.editor = Object.seal(editor); // 一定要用 Object.seal() ，否则会报错

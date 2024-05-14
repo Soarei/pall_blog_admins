@@ -5,13 +5,13 @@
     </div>
     <div class="app-container">
       <div class="search">
-        <div class="serachItem">
+        <search-form
+          :renderButton="renderButton"
+          :searchOptions="searchOptions"
+        ></search-form>
+        <!-- <div class="serachItem">
           <a-input placeholder="搜索操作人"></a-input>
-        </div>
-        <span class="btnConfig">
-          <a-button type="primary" @click="getList">查询</a-button>
-          <!-- <a-button style="margin-left:10px" >查询</a-button> -->
-        </span>
+        </div> -->
       </div>
       <a-table
         :columns="columns"
@@ -39,16 +39,49 @@
 <script>
 import { getTaskList, addTask } from "@/api/task/index";
 import Pagination from "@/components/Pagination/index.vue";
+import SearchForm from "@/components/Antd/SearchForm.vue";
 export default {
   components: {
     Pagination,
+    SearchForm,
   },
   data() {
     return {
       datalist: [],
       pagination: {
-        page: 1,
-        size: 10,
+        position: "bottom",
+        pageSize: 10,
+        current: 1,
+        total: 0,
+        showTotal: (total, range) =>
+          `${range[0]}-${range[1]} of ${total} items`,
+        onShowSizeChange: (current, pageSize) =>
+          this.onSizeChange(current, pageSize), // 改变每页数量时更新显示
+        onChange: (page, pageSize) => this.onPageChange(page, pageSize), //点击页码事件
+      },
+      searchOptions: [
+        {
+          label: "任务名称",
+          value: "taskName",
+          placeholder: "请输入任务名称",
+          type: "input",
+        },
+      ],
+      renderButton: {
+        query: {
+          label: "查询",
+          type: "primary",
+          click: () => {
+            this.getList();
+          },
+        },
+        export: {
+          label: "导出",
+          type: "info",
+          click: () => {
+            console.log("导出");
+          },
+        },
       },
       columns: [
         {

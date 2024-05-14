@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import router from './router'
 import store from './store'
 import { Message } from 'element-ui'
@@ -20,13 +21,6 @@ router.beforeEach(async (to, from, next) => {
   if (hasToken) {
     if (to.path === '/login') {
       next({ path: '/' })
-      // if (to.query.access_token == hasToken) {
-      //   next({ path: '/' })
-      // } else {
-      //   store.dispatch('user/resetToken').then(()=> {
-      //     next()
-      //   })
-      // }
       NProgress.done()
     } else {
       const permission_routes = store.getters.permission_routes && store.getters.permission_routes.length > 0 // 获取菜单
@@ -34,6 +28,7 @@ router.beforeEach(async (to, from, next) => {
         next()
       } else {
         try {
+          let that = Vue.prototype
           // const { roles } = await store.dispatch('user/getInfo') //这里没有用到角色
           const accessRoutes = await store.dispatch('user/generateRoutes') // 获取该角色可以访问的菜单
           router.addRoutes(accessRoutes)
@@ -41,9 +36,8 @@ router.beforeEach(async (to, from, next) => {
           next({ ...to, replace: true })
         } catch (error) {
           console.log(error);
-          // remove token and go to login page to re-login
           await store.dispatch('user/resetToken')
-          Message.error(error || 'Has Error')
+          Vue.prototype.$antmessage.error(err || 'Has Error')
           next(`/login?redirect=${to.path}`)
           NProgress.done()
         }

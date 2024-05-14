@@ -1,24 +1,62 @@
 <template>
   <div class="searchBox">
     <div class="serachInput">
-      <a-row type="flex" style="flex-wrap:wrap;">
-        <a-col :span="6" v-for="(item,index) in searchOptions" :key="index">
-          <!-- 搜索框 -->
-          <a-input-search :placeholder="item.placeholder" style="width:90%" v-model="form[item.value]" @pressEnter="handleFilter" v-if="item.type === 'input'">
-          </a-input-search>
-          <!-- 下拉框 -->
-          <a-select v-model="form[item.value]" style="width:90%" :placeholder="item.placeholder" v-if="item.type === 'select'" @change="handleFilter">
-            <a-select-option v-for="op in item.options" :key="op.value" :value="op.value">
-              {{item.label}}
-            </a-select-option>
-          </a-select>
-        </a-col>
-        <!-- <a-col :span="6" :class="(searchOptions.length >= 4 ? 'active' : '')">
-          <div class="btnConfig">
-            <a-button type="primary" @click="isHideRellser=false">添加商品</a-button>
-          </div>
-        </a-col> -->
-      </a-row>
+      <a-form :form="form" layout="inline">
+        <a-row
+          type="flex"
+          style="flex-wrap: wrap; align-items: center"
+          :gutter="24"
+        >
+          <a-col
+            v-for="(item, index) in searchOptions"
+            :key="index"
+            :md="6"
+            :sm="8"
+          >
+            <a-form-item :label="item.label" style="width: 100%">
+              <!-- 搜索框 -->
+              <a-input
+                :placeholder="item.placeholder"
+                style="width: 100%"
+                v-model="form[item.value]"
+                @pressEnter="handleFilter"
+                v-if="item.type === 'input'"
+              >
+              </a-input>
+              <!-- 下拉框 -->
+              <a-select
+                v-model="form[item.value]"
+                style="width: 100%"
+                :placeholder="item.placeholder"
+                v-if="item.type === 'select'"
+                @change="handleFilter"
+              >
+                <a-select-option
+                  v-for="op in item.options"
+                  :key="op.value"
+                  :value="op.value"
+                >
+                  {{ item.label }}
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :md="6" :sm="6">
+            <!-- 操作按钮 -->
+            <a-button
+              size="mini"
+              v-for="abtn in renderButton"
+              :type="abtn.type"
+              @click="abtn.click"
+              :key="abtn.label"
+              style="margin-right: 10px"
+            >
+              {{ abtn.label }}</a-button
+            >
+            <!-- 是否收起 -->
+          </a-col>
+        </a-row>
+      </a-form>
     </div>
   </div>
 </template>
@@ -27,14 +65,15 @@
 export default {
   data() {
     return {
-      form: {}
-    }
+      form: {},
+    };
   },
   methods: {
     // input回车按钮搜索
     handleFilter() {
-      const params = { ...this.form }
-      this.$emit('handleFilter', params)
+      const params = { ...this.form };
+      console.log(params);
+      this.$emit("handleFilter", params);
     },
   },
   props: {
@@ -42,29 +81,53 @@ export default {
       type: Array,
       default: () => {
         return [
-          // {
-          //   label: "用户昵称",
-          //   value: "user_name",
-          //   placeholder: "请输入用户昵称",
-          //   type: 'select',
-          //   options: [
-          //     {
-          //       label: '111',
-          //       value: '21'
-          //     }
-          //   ]
-          // },
-          // {
-          //   label: "用户账号",
-          //   value: "user_account",
-          //   placeholder: "请输入用户账号",
-          //   type: 'input'
-          // },
-        ]
-      }
-    }
+          {
+            label: "用户昵称",
+            value: "user_name",
+            placeholder: "请输入用户昵称",
+            type: "select",
+            options: [
+              {
+                label: "111",
+                value: "21",
+              },
+            ],
+          },
+          {
+            label: "用户昵称",
+            value: "user_name",
+            placeholder: "请输入用户昵称",
+            type: "select",
+            options: [
+              {
+                label: "111",
+                value: "21",
+              },
+            ],
+          },
+          {
+            label: "用户昵称",
+            value: "user_name",
+            placeholder: "请输入用户昵称",
+            type: "select",
+            options: [
+              {
+                label: "111",
+                value: "21",
+              },
+            ],
+          },
+        ];
+      },
+    },
+    renderButton: {
+      type: Object,
+      default: () => {
+        return {};
+      },
+    },
   },
-}
+};
 </script>
 
 <style lang="less" scoped>
@@ -73,5 +136,12 @@ export default {
 }
 .active {
   margin-top: 20px;
+}
+/deep/ .ant-form-item-label label {
+  color: #666 !important;
+  font-size: 15px;
+}
+/deep/ .ant-form-item-control-wrapper {
+  width: 70%;
 }
 </style>
