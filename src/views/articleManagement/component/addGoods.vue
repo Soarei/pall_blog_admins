@@ -132,9 +132,7 @@ export default {
     return {
       locale,
       activeName: "first",
-      addGoodsForm: {
-        level: 0,
-      },
+      addGoodsForm: {},
       editImg: {},
       sort: [],
       addGoodsRules: {
