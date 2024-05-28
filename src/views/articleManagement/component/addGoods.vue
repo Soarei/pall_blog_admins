@@ -184,8 +184,8 @@ export default {
   created() {
     if (this.editForm.article_id) {
       this.addGoodsForm = this.editForm;
-      console.log(this.addGoodsForm);
       this.addGoodsForm.catgory_id = Number(this.editForm.catgory_id);
+      this.addGoodsForm.level = Number(this.addGoodsForm.level);
     }
     this.getCategoryList();
     this.getLabels();
@@ -311,6 +311,10 @@ export default {
       if (this.$refs.cascaderRef) {
         this.$refs.cascaderRef.closeVisible = false;
       }
+    },
+    editForm: function () {
+      this.getCategoryList();
+      this.getLabels();
     },
   },
   beforeDestroy() {

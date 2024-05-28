@@ -47,7 +47,7 @@
               size="mini"
               v-for="abtn in renderButton"
               :type="abtn.type"
-              @click="abtn.click"
+              @click="abtn.click()"
               :key="abtn.label"
               style="margin-right: 10px"
             >
@@ -80,44 +80,7 @@ export default {
     searchOptions: {
       type: Array,
       default: () => {
-        return [
-          {
-            label: "用户昵称",
-            value: "user_name",
-            placeholder: "请输入用户昵称",
-            type: "select",
-            options: [
-              {
-                label: "111",
-                value: "21",
-              },
-            ],
-          },
-          {
-            label: "用户昵称",
-            value: "user_name",
-            placeholder: "请输入用户昵称",
-            type: "select",
-            options: [
-              {
-                label: "111",
-                value: "21",
-              },
-            ],
-          },
-          {
-            label: "用户昵称",
-            value: "user_name",
-            placeholder: "请输入用户昵称",
-            type: "select",
-            options: [
-              {
-                label: "111",
-                value: "21",
-              },
-            ],
-          },
-        ];
+        return [];
       },
     },
     renderButton: {

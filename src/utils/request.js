@@ -31,7 +31,8 @@ service.interceptors.response.use(
     const res = response.data
     let that = Vue.prototype
     if (res.code != 5200) {
-      that.$antmessage.error(res.message || '服务器开小差了', 5000)
+
+      that.$antmessage.error(res.message || '服务器开小差了')
       if (res.code == 1001) {
         that.$antconfirm({
           title: "提示",
@@ -51,7 +52,7 @@ service.interceptors.response.use(
     }
   },
   error => {
-    that.$antmessage.error(error.message || '服务器开小差了', 5000)
+    that.$antmessage.error(error.message || '服务器开小差了')
     return Promise.reject(error)
   }
 )

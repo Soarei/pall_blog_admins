@@ -5,24 +5,17 @@
         <h2>文章列表</h2>
       </div>
       <div class="app-container">
-        <div class="search">
-          <div class="serachItem">
-            <a-input placeholder="搜索关键词"></a-input>
-            <a-input placeholder="搜索关键词"></a-input>
-          </div>
-          <span class="btnConfig">
-            <a-button type="primary" @click="handleAdd">添加文章</a-button>
-            <a-button type="primary" @click="getList">查询</a-button>
-            <a-button style="margin-left: 10px">查询</a-button>
-          </span>
-        </div>
+        <SearchForm
+          :searchOptions="searchOptions"
+          :renderButton="renderButton"
+        ></SearchForm>
+        <a-button @click="handleAdd">添加</a-button>
         <!-- <Pagination v-show="total > 0" :total="total" :page.sync="listQuery.page" :size.sync="listQuery.size" @pagination="getList" /> -->
         <a-table
           :columns="columns"
           :data-source="list"
           :scroll="{ x: 1000 }"
           rowKey="article_id"
-          :pagination="pagination"
           bordered
         >
           <!-- <template slot="article_cover" slot-scope="text, record">
@@ -34,14 +27,14 @@
             />
           </template> -->
           <template slot="recommend" slot-scope="text, record">
-            <a-rate :default-value="3" disabled :count="3" />
+            <a-rate :value="record.level" disabled :count="3" />
           </template>
           <template slot="labels" slot-scope="text, record">
             <a-tag
               v-for="(item, index) in record.labels"
               :key="index"
-              :color="item | formatRoles"
-              >{{ item }}</a-tag
+              :color="item.color"
+              >{{ item.name }}</a-tag
             >
           </template>
           <template slot="status" slot-scope="text, record">
@@ -69,17 +62,17 @@
 <script>
 // import { getGoods,delGoods,updateGoods } from '@/api/goods'
 import { getArticleList, delArticle } from "@/api/pall_article";
-import Pagination from "../../components/Pagination";
 import SearchBox from "../../components/searchBox";
 import CursorImage from "../../components/CursorImage";
+import SearchForm from "../../components/Antd/SearchForm.vue";
 // 引入添加修改商品组件
 import AddGoods from "./component/addGoods.vue";
 export default {
   components: {
-    Pagination,
     SearchBox,
     AddGoods,
     CursorImage,
+    SearchForm,
   },
   data() {
     return {
@@ -130,11 +123,11 @@ export default {
           title: "作者",
           dataIndex: "user_name",
           key: "user_name",
-          width: 100,
+          width: 120,
         },
         {
           title: "状态",
-          width: 100,
+          width: 80,
           scopedSlots: { customRender: "status" },
         },
         {
@@ -144,20 +137,56 @@ export default {
         },
       ],
       pagination: {
-        position: "bottom",
         pageSize: 10,
         current: 1,
         total: 0,
         showTotal: (total, range) => `${range[0]}-${range[1]} 共 ${total} 条`,
-        onShowSizeChange: (current, pageSize) =>
-          this.onSizeChange(current, pageSize), // 改变每页数量时更新显示
-        onChange: (page, pageSize) => this.onPageChange(page, pageSize), //点击页码事件
       },
       dialogVisible: true,
       // 商品图片处理
       bigImg: "",
       // 编辑商品对象
       addGoodsForm: {},
+      search: {
+        article_title: "",
+      },
+      searchOptions: [
+        {
+          label: "文章标题",
+          value: "article_title",
+          placeholder: "请输入文章标题",
+          type: "input",
+        },
+        {
+          label: "文章分类",
+          value: "category",
+          placeholder: "请输入文章分类",
+          type: "select",
+          options: [],
+        },
+        {
+          label: "状态",
+          value: "user_name",
+          placeholder: "请输入文章标题",
+          type: "input",
+        },
+      ],
+      renderButton: {
+        query: {
+          label: "查询",
+          type: "primary",
+          click: () => {
+            this.getList();
+          },
+        },
+        export: {
+          label: "导出",
+          type: "info",
+          click: () => {
+            console.log("导出");
+          },
+        },
+      },
     };
   },
   created() {
@@ -166,7 +195,11 @@ export default {
   methods: {
     getList() {
       const { current } = this.pagination;
-      getArticleList({ page: current, size: 10 })
+      getArticleList({
+        page: current,
+        size: 10,
+        article_title: this.search.article_title,
+      })
         .then((res) => {
           if (res.code === 5200) {
             this.listLoading = false;
@@ -178,6 +211,11 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+    },
+    resetSearch() {
+      this.pagination.current = 1;
+      this.search.article_title = "";
+      this.getList();
     },
     onPageChange(current, pageSize) {
       this.pagination.current = current;
@@ -198,7 +236,12 @@ export default {
     // 编辑商品
     handleEdit(row) {
       this.dialogVisible = false;
-      this.addGoodsForm = row;
+      this.addGoodsForm = JSON.parse(JSON.stringify(row));
+      this.addGoodsForm.tags = JSON.parse(JSON.stringify(row)).labels.map(
+        (item) => {
+          return item.id;
+        }
+      );
       console.log(this.addGoodsForm, "list");
     },
     // 放大商品图片

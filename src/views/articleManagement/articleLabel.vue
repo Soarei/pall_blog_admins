@@ -29,9 +29,13 @@
         <template slot="enabled" slot-scope="text, record">
           <div>{{ record.status ? "正常" : "异常" }}</div>
         </template>
+        <template slot="label_name" slot-scope="text, record">
+          <div class="colorlabel">
+            <a-tag :color="record.color"> {{ record.label_name }}</a-tag>
+          </div>
+        </template>
         <template slot="action" slot-scope="text, record">
           <a style="margin-left: 5px" @click="editCloumn(record)">编辑</a>
-          <!-- <a style="margin-left:5px;" @click="closeInfo(record)">{{record.enabled ? '关闭': '开启'}}</a> -->
           <a
             style="margin-left: 5px; color: red"
             @click="deleteCloumn(record.id)"
@@ -50,6 +54,18 @@
         <a-form-model layout="vertical" :model="form" ref="form" :rules="rules">
           <a-form-model-item label="标签名称" prop="label_name">
             <a-input v-model="form.label_name" style="width: 100%" />
+          </a-form-model-item>
+          <a-form-model-item label="标签颜色">
+            <div class="color">
+              <div
+                class="color-item"
+                :class="item == form.color ? 'active' : ''"
+                @click="choiceColor(item)"
+                v-for="item in colorlist"
+                :key="item"
+                :style="{ background: item }"
+              ></div>
+            </div>
           </a-form-model-item>
           <a-form-model-item label="状态">
             <a-switch
@@ -85,6 +101,28 @@ export default {
   data() {
     return {
       data: [],
+      colorlist: [
+        "#f5b148",
+        "#999999",
+        "#e8f6b2",
+        "#d6839e",
+        "#e8f6b1",
+        "#6df083",
+        "#3a1a4f",
+        "#900c",
+        "#852eaf",
+        "#54deac",
+        "#3f4a9c",
+        "#666adb",
+        "#13b464",
+        "#1127e1",
+        "#f2b240",
+        "#6d5c36",
+        "#e7a65e",
+        "#25f4ab",
+        "#67f5bd",
+        "#8d9792",
+      ],
       columns: [
         {
           title: "ID",
@@ -94,8 +132,7 @@ export default {
         },
         {
           title: "标签名称",
-          dataIndex: "label_name",
-          key: "label_name",
+          scopedSlots: { customRender: "label_name" },
         },
         {
           title: "点击数",
@@ -136,10 +173,18 @@ export default {
       form: {
         label_name: "",
         status: 0,
+        color: "#f5b148",
       },
       rules: {
         label_name: [
           { required: true, message: "请输入标签名称", trigger: "change" },
+        ],
+        color: [
+          {
+            required: true,
+            message: "请选择标签颜色",
+            trigger: "change",
+          },
         ],
         status: [{ required: true, message: "请选择状态", trigger: "change" }],
       },
@@ -166,6 +211,11 @@ export default {
           console.log(err);
         });
     },
+    //选择标签颜色
+    choiceColor(val) {
+      console.log(val);
+      this.form.color = val;
+    },
     // 创建标签
     createLabel() {
       // Object.assign(this.$data.form,this.$options.data.form)
@@ -176,7 +226,7 @@ export default {
     },
     // 编辑标签
     editCloumn(record) {
-      this.form = record;
+      this.form = JSON.parse(JSON.stringify(record));
       const { status } = this.form;
       this.form.status = status == 0 ? false : true;
       this.dialogVisible = true;
@@ -236,5 +286,20 @@ export default {
 @import url("../../styles/page-public.less");
 a {
   color: #1890ff;
+}
+.color {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  .color-item {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+    margin-bottom: 5px;
+    // border: 1px solid #bfbfbf;
+  }
+  .active {
+    border: 2px solid #1890ff;
+  }
 }
 </style>
