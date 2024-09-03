@@ -87,7 +87,8 @@ export default {
   methods: {
     updateMessage() {
       updateMessage().then((res) => {
-        console.log(res);
+        this.$antmessage.success("更新成功");
+        this.getList();
       });
     },
     getList() {

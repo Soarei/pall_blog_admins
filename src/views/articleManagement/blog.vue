@@ -38,7 +38,16 @@
             >
           </template>
           <template slot="status" slot-scope="text, record">
-            <a-tag color="cyan">{{ record.status ? "上架" : "下架" }}</a-tag>
+            <a-tag color="#87d068">{{
+              record.status == 1
+                ? "审批中"
+                : record.status == "2"
+                ? "审核成功"
+                : "审核失败"
+            }}</a-tag>
+          </template>
+          <template slot="listing" slot-scope="text, record">
+            <a-tag color="cyan">{{ record.listing ? "上架" : "下架" }}</a-tag>
           </template>
           <template slot="action" slot-scope="text, record">
             <a style="margin-left: 5px" @click="handleEdit(record)">编辑</a>
@@ -129,6 +138,11 @@ export default {
           title: "状态",
           width: 80,
           scopedSlots: { customRender: "status" },
+        },
+        {
+          title: "上下架",
+          width: 80,
+          scopedSlots: { customRender: "listing" },
         },
         {
           title: "操作",
