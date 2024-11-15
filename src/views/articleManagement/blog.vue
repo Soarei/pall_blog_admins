@@ -16,7 +16,6 @@
           :data-source="list"
           :scroll="{ x: 1000 }"
           rowKey="article_id"
-          bordered
         >
           <!-- <template slot="article_cover" slot-scope="text, record">
             <img
@@ -30,12 +29,10 @@
             <a-rate :value="record.level" disabled :count="3" />
           </template>
           <template slot="labels" slot-scope="text, record">
-            <a-tag
-              v-for="(item, index) in record.labels"
-              :key="index"
-              :color="item.color"
-              >{{ item.name }}</a-tag
-            >
+            <!--:color="item.color" -->
+            <a-tag v-for="(item, index) in record.labels" :key="index">{{
+              item.name
+            }}</a-tag>
           </template>
           <template slot="status" slot-scope="text, record">
             <a-tag color="#87d068">{{
@@ -97,7 +94,7 @@ export default {
           title: "创建时间",
           dataIndex: "release_time",
           key: "release_time",
-          width: 150,
+          width: 200,
         },
         // {
         //   title: "文章封面",
@@ -115,7 +112,7 @@ export default {
         {
           title: "推荐",
           scopedSlots: { customRender: "recommend" },
-          width: 100,
+          width: 200,
         },
         {
           title: "文章分类",

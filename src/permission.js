@@ -32,7 +32,7 @@ router.beforeEach(async (to, from, next) => {
           // const { roles } = await store.dispatch('user/getInfo') //这里没有用到角色
           const accessRoutes = await store.dispatch('user/generateRoutes') // 获取该角色可以访问的菜单
           router.addRoutes(accessRoutes)
-          router.addRoutes([{ path: '*', redirect: '/', hidden: true }])
+          // router.addRoutes([{ path: '*', redirect: '/', hidden: true }])
           next({ ...to, replace: true })
         } catch (error) {
           console.log(error);

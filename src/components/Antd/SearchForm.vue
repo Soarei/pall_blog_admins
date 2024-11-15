@@ -10,7 +10,7 @@
           <a-col
             v-for="(item, index) in searchOptions"
             :key="index"
-            :md="6"
+            :md="8"
             :sm="8"
           >
             <a-form-item :label="item.label" style="width: 100%">
@@ -39,21 +39,42 @@
                   {{ item.label }}
                 </a-select-option>
               </a-select>
+              <!-- 时间选择器 -->
+              <a-range-picker
+                v-if="item.type === 'date'"
+                style="width: 100%"
+                v-model="form[item.value]"
+                showToday
+                :show-time="{
+                  hideDisabledOptions: true,
+                  defaultValue: [
+                    moment('00:00:00', 'HH:mm:ss'),
+                    moment('11:59:59', 'HH:mm:ss'),
+                  ],
+                }"
+                format="YYYY-MM-DD HH:mm:ss"
+              />
             </a-form-item>
           </a-col>
           <a-col :md="6" :sm="6">
-            <!-- 操作按钮 -->
+            <!-- 查询 -->
             <a-button
-              size="mini"
-              v-for="abtn in renderButton"
-              :type="abtn.type"
-              @click="abtn.click()"
-              :key="abtn.label"
+              type="primary"
+              @click="handleFilter"
+              v-if="renderButton.query.type == 'search'"
               style="margin-right: 10px"
             >
-              {{ abtn.label }}</a-button
+              {{ renderButton.query.label }}</a-button
             >
-            <!-- 是否收起 -->
+            <!-- 批量采集 -->
+            <a-button
+              type="primary"
+              @click="handleRowsImport"
+              v-if="renderButton.rowsImport.type == 'rowsImport'"
+              style="margin-right: 10px"
+            >
+              {{ renderButton.rowsImport.label }}</a-button
+            >
           </a-col>
         </a-row>
       </a-form>
@@ -62,18 +83,38 @@
 </template>
 
 <script>
+import moment from "moment";
 export default {
   data() {
     return {
       form: {},
+      moment,
     };
   },
+  mounted() {},
   methods: {
     // input回车按钮搜索
     handleFilter() {
       const params = { ...this.form };
       console.log(params);
       this.$emit("handleFilter", params);
+    },
+    handleRowsImport() {
+      this.$emit("handleRowsImport");
+    },
+    disabledRangeTime(_, type) {
+      if (type === "start") {
+        return {
+          disabledHours: () => this.range(0, 60).splice(4, 20),
+          disabledMinutes: () => this.range(30, 60),
+          disabledSeconds: () => [55, 56],
+        };
+      }
+      return {
+        disabledHours: () => this.range(0, 60).splice(20, 4),
+        disabledMinutes: () => this.range(0, 31),
+        disabledSeconds: () => [55, 56],
+      };
     },
   },
   props: {

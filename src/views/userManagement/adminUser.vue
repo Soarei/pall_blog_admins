@@ -139,34 +139,41 @@ export default {
           title: "用户账号",
           dataIndex: "user_account",
           key: "user_account",
+          width: 150,
         },
         {
           title: "用户昵称",
           dataIndex: "user_name",
           key: "user_name",
+          width: 150,
         },
         {
           title: "用户年龄",
           dataIndex: "user_age",
           key: "user_age",
+          width: 100,
         },
         {
           title: "用户性别",
           dataIndex: "user_gender",
           key: "user_gender",
+          width: 100,
         },
         {
           title: "角色",
           scopedSlots: { customRender: "roles" },
+          width: 150,
         },
         {
           title: "状态",
           scopedSlots: { customRender: "status" },
+          width: 150,
         },
         {
           title: "创建时间",
           dataIndex: "createdAt",
           key: "createdAt",
+          width: 200,
         },
         {
           title: "操作",

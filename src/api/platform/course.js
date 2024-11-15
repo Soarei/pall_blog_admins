@@ -1,16 +1,19 @@
 // /course/insert
 import request from '@/utils/request'
+import serviceRequest from '@/utils/request-collect'
+
+
 /*
  *@description:获取轮播图列表
  *@author: pf
  *@date: 2022-12-27 14:03:12
  *@version: V1.0.5
 */
-export function getCourseList(data){
+export function getCourseList(data) {
   return request({
-    url:'/admin/platform/course/list',
-    method:'get',
-    params:data
+    url: '/admin/platform/course/list',
+    method: 'get',
+    params: data
   })
 }
 /*
@@ -34,10 +37,10 @@ export function addCourseList(data) {
  *@version: V1.0.5
 */
 
-export function updateCourse(data){
+export function updateCourse(data) {
   return request({
-    url:'/admin/platform/course/update',
-    method:'post',
+    url: '/admin/platform/course/update',
+    method: 'post',
     data
   })
 }
@@ -49,10 +52,43 @@ export function updateCourse(data){
  *@version: V1.0.5
 */
 
-export function delCourse(data){
+export function delCourse(data) {
   return request({
-    url:'/admin/platform/course/del',
-    method:'post',
+    url: '/admin/platform/course/del',
+    method: 'post',
+    data
+  })
+}
+
+export function getCollectionAudio(data) {
+  return request({
+    url: '/admin/platform/collect/video',
+    method: 'post',
+    data
+  })
+}
+
+
+// 获取全部音色
+export function getallVoiceList() {
+  return request({
+    url: '/admin/platform/voice/all',
+    method: 'post'
+  })
+}
+
+export function addCollectionGoods(data) {
+  return serviceRequest({
+    url: 'testcoll',
+    method: 'post',
+    data
+  })
+}
+
+export function addTaobao(data) {
+  return serviceRequest({
+    url: 'collection/taobao',
+    method: 'post',
     data
   })
 }

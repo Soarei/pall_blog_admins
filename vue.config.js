@@ -1,7 +1,7 @@
 'use strict'
 const path = require('path')
 const defaultSettings = require('./src/settings.js')
-const serverAddress = 'http://localhost:4000'
+const serverAddress = 'http://localhost:4001'
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
@@ -47,6 +47,14 @@ module.exports = {
         ws: true,
         pathRewrite: {
           '^/api': '/'
+        }
+      },
+      '^/colle': {
+        target: 'http://localhost:8989',
+        changeOrigin: true,
+        ws: true,
+        pathRewrite: {
+          '^/colle': '/'
         }
       }
     }

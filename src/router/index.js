@@ -4,7 +4,7 @@ Vue.use(Router)
 
 /* Layout */
 import Layout from '@/layout'
-import { domenuList } from '@/utils/perrmisson'
+import { title } from '@/settings'
 
 export const constantRoutes = [
   {
@@ -23,12 +23,15 @@ export const constantRoutes = [
     hidden: true
   },
   {
-    path: "",
+    path: "/",
     component: Layout,
     redirect: "dashboard",
+    meta: {
+      title: '仪表盘'
+    },
     children: [{
       path: "dashboard",
-      component: () => import("@/views/dashboard/index"),
+      component: () => import("@/views/dashboard/info"),
       name: "Dashboard",
       meta: {
         title: "主页",
@@ -167,7 +170,7 @@ function treeRoutes(list) {
 }
 
 const createRouter = () => new Router({
-  // mode: 'history', // require service support
+  mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
 })

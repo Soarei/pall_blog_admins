@@ -52,7 +52,13 @@ export default {
   data() {
     return {
       columns: [
-        { title: "菜单名称", dataIndex: "name", key: "name", align: "left" },
+        {
+          title: "菜单名称",
+          dataIndex: "name",
+          key: "name",
+          align: "left",
+          width: 180,
+        },
         { title: "菜单ID", dataIndex: "id", key: "id" },
         // { title: "父级菜单", dataIndex: "parentId", key: "parentId" },
         { title: "类型", scopedSlots: { customRender: "type" } },

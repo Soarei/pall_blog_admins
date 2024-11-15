@@ -5,8 +5,9 @@
       mode="inline"
       theme="dark"
       :inline-collapsed="isCollapse"
-      :default-selected-keys="openKeys"
       :open-keys.sync="openKeys"
+      :selectedKeys="selectedKeys"
+      @click="select"
     >
       <template v-for="route in routes">
         <a-sub-menu v-if="!route.hidden" :key="route.path">
@@ -51,7 +52,8 @@ export default {
   },
   data() {
     return {
-      openKeys: ["/taskmanagement"],
+      openKeys: [this.$route.path.substr(0, this.$route.path.lastIndexOf("/"))],
+      selectedKeys: ["/course"],
     };
   },
   created() {
@@ -86,6 +88,13 @@ export default {
     },
     isCollapse() {
       return !this.sidebar.opened;
+    },
+  },
+  methods: {
+    select({ item, key, selectedKeys }) {
+      // 选中项
+      this.selectedKeys = [key];
+      localStorage.setItem("selectedKeys", JSON.stringify(this.selectedKeys));
     },
   },
 };

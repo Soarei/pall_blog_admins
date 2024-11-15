@@ -22,7 +22,7 @@ export function setUserInfo(data) {
 }
 // 获取用户信息
 export function getUserInfoStore() {
-  return JSON.parse(storage.get(UserInfo))
+  return storage.get(UserInfo) ? JSON.parse(storage.get(UserInfo)) : {}
 }
 // 移除用户信息
 

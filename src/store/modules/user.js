@@ -130,6 +130,8 @@ const actions = {
           }
           if (item.parentId == 0) {
             item.component = Layout
+            item.redirect = item.children[0].path
+            // obj.redirect = item.url
           } else {
             item.component = (reslove) => require([`@/views/${item.url}`], reslove)
           }
@@ -137,6 +139,8 @@ const actions = {
       }
       dealMenu(accessedRoutes)
       commit('SET_ROUTES', accessedRoutes)
+      console.log(accessedRoutes);
+
       resolve(accessedRoutes)
     })
   }

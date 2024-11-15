@@ -25,6 +25,7 @@ import Layout from '@/layout'
 export function domenuList() {
   const list = []
   const data = getUserMenus()
+  console.log(data);
   data.forEach(item => {
     const obj = {
       path: item.routeUrl,
@@ -39,14 +40,6 @@ export function domenuList() {
     if (item.parentId === 0) {
       obj.component = Layout
       obj.redirect = item.url
-      if (item.routeUrl === '/') {
-        obj.children = [{
-          path: 'dashboard',
-          name: 'Dashboard',
-          component: () => import('@/views/dashboard/index'),
-          meta: { title: '主页', icon: 'dashboard' }
-        }]
-      }
     } else {
       obj = {
         "component": () => import('@/views' + item.url)
