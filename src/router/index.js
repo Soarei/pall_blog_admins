@@ -169,6 +169,8 @@ function treeRoutes(list) {
   return treeData;
 }
 
+console.log(constantRoutes, 'constantRoutes');
+
 const createRouter = () => new Router({
   mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),

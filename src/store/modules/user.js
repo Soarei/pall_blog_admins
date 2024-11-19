@@ -133,6 +133,8 @@ const actions = {
             item.redirect = item.children[0].path
             // obj.redirect = item.url
           } else {
+            console.log(item.url, 'item.url');
+
             item.component = (reslove) => require([`@/views/${item.url}`], reslove)
           }
         })

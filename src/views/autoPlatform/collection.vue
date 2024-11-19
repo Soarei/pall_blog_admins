@@ -230,7 +230,7 @@ export default {
         return;
       }
       this.spinning = true;
-      addCollectionGoods({ goodslist: list }).then((res) => {
+      colletSignGoods({ goodslist: list }).then((res) => {
         this.$notify.success("成功");
         this.spinning = false;
         this.getList();

@@ -70,7 +70,10 @@
             <a-button
               type="primary"
               @click="handleRowsImport"
-              v-if="renderButton.rowsImport.type == 'rowsImport'"
+              v-if="
+                renderButton.rowsImport &&
+                renderButton.rowsImport.type == 'rowsImport'
+              "
               style="margin-right: 10px"
             >
               {{ renderButton.rowsImport.label }}</a-button
