@@ -53,7 +53,7 @@ export default {
   data() {
     return {
       openKeys: [this.$route.path.substr(0, this.$route.path.lastIndexOf("/"))],
-      selectedKeys: ["/course"],
+      selectedKeys: JSON.parse(localStorage.getItem("selectedKeys")),
     };
   },
   created() {

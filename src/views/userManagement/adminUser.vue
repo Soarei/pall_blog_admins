@@ -148,18 +148,6 @@ export default {
           width: 150,
         },
         {
-          title: "用户年龄",
-          dataIndex: "user_age",
-          key: "user_age",
-          width: 100,
-        },
-        {
-          title: "用户性别",
-          dataIndex: "user_gender",
-          key: "user_gender",
-          width: 100,
-        },
-        {
           title: "角色",
           scopedSlots: { customRender: "roles" },
           width: 150,

@@ -14,3 +14,10 @@ export function addTask(data) {
     data
   })
 }
+/* 素材库 */
+export function getHabitsRespons() {
+  return request({
+    url: '/admin/task/mater/list',
+    method: 'post',
+  })
+}

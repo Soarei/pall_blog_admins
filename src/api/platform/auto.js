@@ -33,3 +33,12 @@ export function colletTaobaoGoods(data) {
     data
   })
 }
+
+// 采集图片保存
+export function downloadPicture(data) {
+  return request({
+    method: 'post',
+    url: '/admin/platform/collect/taobao/link',
+    data
+  })
+}

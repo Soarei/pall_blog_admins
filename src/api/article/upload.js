@@ -9,12 +9,12 @@ export function uploadImg(data) {
 }
 
 export function uploadInter() {
-  return '/api/admin/upload/uploadFile'
+  return '/api/admin/upload/cosImages'
 }
 
 export function uploadFileImage(data) {
   return request({
-    url: '/admin/upload/uploadFile',
+    url: '/admin/upload/cosImages',
     method: 'post',
     data
   })

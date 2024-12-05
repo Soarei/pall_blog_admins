@@ -149,7 +149,7 @@ export const constantRoutes = [
   //   ]
   // },
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/', hidden: true }
+  // { path: '*', redirect: '/', hidden: true }
 ]
 
 function treeRoutes(list) {
