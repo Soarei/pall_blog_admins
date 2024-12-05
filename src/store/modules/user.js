@@ -24,6 +24,7 @@ const mutations = {
   },
   SET_USERINFO: (state, userinfo) => {
     state.user_info = userinfo
+    setUserInfo(JSON.stringify(userinfo))
   },
   SET_ROUTES: (state, routes) => {
     state.addRoutes = routes
@@ -66,10 +67,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       pallLogin({ user_account: user_account.trim(), password }).then(response => {
         const data = response.data
-        commit('SET_TOKEN', data.jwt)
+        commit('SET_TOKEN', data.token)
         commit('SET_USERINFO', data.user_info)
-        setToken(data.jwt)
-        setUserInfo(JSON.stringify(data.user_info))
         // 存取用户的菜单信息
         setUserMenus(menu(data.perission))
         resolve()

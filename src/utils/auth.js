@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie'
 import storage from 'good-storage'
-const TokenKey = 'vue_admin_template_token'
+const TokenKey = 'pallToken'
 const UserInfo = 'user_info'
 const _perrmisson = 'perrmisson'
 export function getToken() {
@@ -8,7 +8,8 @@ export function getToken() {
 }
 
 export function setToken(token) {
-  console.log(TokenKey, token);
+  console.log(token);
+
   return Cookies.set(TokenKey, token)
 }
 

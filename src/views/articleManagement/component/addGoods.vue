@@ -1,55 +1,87 @@
 <template>
   <div class="wrap">
-    <div class="app-title">
-      <h2>添加文章</h2>
+    <div class="page-header">
+      <div class="header-left">
+        <a-button class="cancel-btn" @click="cancelForm">
+          <left-outlined />返回
+        </a-button>
+        <div class="divider"></div>
+        <h2>写文章</h2>
+      </div>
+      <div class="header-right">
+        <a-button>存草稿</a-button>
+        <a-button type="primary" @click="submitForm">
+          <check-outlined />发布文章
+        </a-button>
+      </div>
     </div>
-    <!-- 内容 -->
-    <div class="content">
+
+    <div class="article-form-container">
       <a-form
         :form="addGoodsForm"
-        :label-col="{ span: 5 }"
-        :wrapper-col="{ span: 12 }"
         @submit="submitForm"
         ref="form"
+        class="article-form"
+        layout="vertical"
       >
-        <a-form-item label="文章分类">
-          <a-select
-            v-model="addGoodsForm.catgory_id"
-            placeholder="请选择文章分类"
-            style="width: 100%"
-          >
-            <a-select-option
-              v-for="item in categoryList"
-              :key="item.catgory_id"
-              :value="item.catgory_id"
+        <a-input
+          v-model="addGoodsForm.article_title"
+          placeholder="输入文章标题..."
+          class="title-input"
+          :maxLength="100"
+          :bordered="false"
+        />
+
+        <div class="article-meta-wrapper">
+          <div class="meta-label">
+            <span class="dot"></span>
+            <span>文章信息</span>
+          </div>
+          <div class="article-meta">
+            <a-select
+              v-model="addGoodsForm.catgory_id"
+              placeholder="选择分类"
+              class="category-select"
+              size="middle"
+              :bordered="false"
             >
-              {{ item.catgory_name }}</a-select-option
+              <a-select-option
+                v-for="item in categoryList"
+                :key="item.catgory_id"
+                :value="item.catgory_id"
+              >
+                {{ item.catgory_name }}
+              </a-select-option>
+            </a-select>
+
+            <a-select
+              mode="multiple"
+              v-model="addGoodsForm.tags"
+              placeholder="添加标签"
+              class="tags-select"
+              size="middle"
+              :bordered="false"
+              :maxTagCount="3"
+              :maxTagTextLength="10"
             >
-          </a-select>
-        </a-form-item>
-        <a-form-item label="标签">
-          <a-select
-            mode="multiple"
-            v-model="addGoodsForm.tags"
-            placeholder="请选择标签"
-            style="width: 100%"
-          >
-            <a-select-option
-              v-for="item in labelList"
-              :key="item.id"
-              :value="item.id"
+              <a-select-option
+                v-for="item in labelList"
+                :key="item.id"
+                :value="item.id"
+              >
+                {{ item.label_name }}
+              </a-select-option>
+            </a-select>
+          </div>
+        </div>
+
+        <div class="cover-upload">
+          <div class="upload-title">
+            <span>封面图</span>
+            <span class="upload-tip"
+              >支持 jpg、png 格式，建议尺寸 1200x400</span
             >
-              {{ item.label_name }}</a-select-option
-            >
-          </a-select>
-        </a-form-item>
-        <a-form-item label="文章标题">
-          <a-input
-            v-model="addGoodsForm.article_title"
-            placeholder="请输入文章标题"
-          ></a-input>
-        </a-form-item>
-        <a-form-item label="文章封面">
+          </div>
           <a-upload-dragger
             name="file"
             :multiple="false"
@@ -57,53 +89,48 @@
             :headers="headers"
             @change="handleChange"
             @preview="handlePreview"
+            class="upload-area"
           >
-            <p class="ant-upload-drag-icon">
-              <a-icon type="inbox" />
-            </p>
-            <p class="ant-upload-text">单击或拖动文件到此区域进行上传</p>
-            <p class="ant-upload-hint">
-              支持单次或批量上传。严禁 上传公司数据或其他波段文件
-            </p>
+            <div class="upload-content">
+              <picture-outlined />
+              <p>点击或拖拽上传封面图片</p>
+            </div>
           </a-upload-dragger>
-        </a-form-item>
-        <!-- 发布时间 -->
-        <a-form-item label="发布时间">
-          <a-date-picker
-            @change="onChange"
-            v-model="addGoodsForm.release_time"
-            style="width: 100%"
-            :locale="locale"
-            format="YYYY-MM-DD HH:mm:ss"
+        </div>
+
+        <div class="editor-container">
+          <Toolbar
+            class="editor-toolbar"
+            :editor="editor"
+            :defaultConfig="toolbarConfig"
+            :mode="mode"
           />
-        </a-form-item>
-        <!-- 推荐等级 -->
-        <a-form-item label="推荐等级">
-          <a-rate v-model="addGoodsForm.level" :count="4" />
-        </a-form-item>
-        <a-form-item label="文章内容">
-          <div style="border: 1px solid #ccc">
-            <Toolbar
-              style="border-bottom: 1px solid #ccc"
-              :editor="editor"
-              :defaultConfig="toolbarConfig"
-              :mode="mode"
-            />
-            <Editor
-              style="height: 300px; overflow-y: hidden"
-              v-model="addGoodsForm.article_content"
-              :defaultConfig="editorConfig"
-              :mode="mode"
-              @onCreated="onCreated"
-            />
+          <Editor
+            class="editor-content"
+            v-model="addGoodsForm.article_content"
+            :defaultConfig="editorConfig"
+            :mode="mode"
+            @onCreated="onCreated"
+          />
+        </div>
+
+        <div class="publish-settings">
+          <h3>发布设置</h3>
+          <div class="settings-content">
+            <div class="setting-item">
+              <span class="setting-label">发布时间</span>
+              <a-date-picker
+                v-model="addGoodsForm.release_time"
+                show-time
+                format="YYYY-MM-DD HH:mm:ss"
+              />
+            </div>
+            <div class="setting-item">
+              <span class="setting-label">推荐等级</span>
+              <a-rate v-model="addGoodsForm.level" :count="4" />
+            </div>
           </div>
-        </a-form-item>
-        <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
-          <a-button type="primary" html-type="submit"> 确认发布 </a-button>
-          <a-button type="info" style="margin-left: 20px" @click="cancelForm">
-            返回文章
-          </a-button>
-        </a-form-item>
+        </div>
       </a-form>
     </div>
   </div>
@@ -118,6 +145,7 @@ import { addArticle, updateArticle } from "@/api/pall_article";
 import { getAllLabels } from "@/api/specfation";
 import { getCategoryList } from "@/api/category";
 import locale from "ant-design-vue/es/date-picker/locale/zh_CN";
+
 export default {
   components: { ImgListElement, ImgListElementLast, Editor, Toolbar },
   props: {
@@ -168,8 +196,53 @@ export default {
       // 富文本编辑器相关
       editor: null,
       html: "<p>hello</p>",
-      toolbarConfig: {},
-      editorConfig: { placeholder: "请输入内容..." },
+      toolbarConfig: {
+        toolbarKeys: [
+          "headerSelect",
+          "bold",
+          "italic",
+          "underline",
+          "through",
+          "|",
+          "bulletedList",
+          "numberedList",
+          "todo",
+          "|",
+          "justifyLeft",
+          "justifyCenter",
+          "justifyRight",
+          "|",
+          "insertLink",
+          "insertImage",
+          "insertTable",
+          "codeBlock",
+          "|",
+          "undo",
+          "redo",
+        ],
+      },
+      editorConfig: {
+        placeholder: "请输入内容...",
+        autoFocus: false,
+        scroll: true,
+        maxLength: 100000,
+        MENU_CONF: {
+          uploadImage: {
+            server: "/api/admin/upload/uploadFile",
+            fieldName: "file",
+            headers: {
+              token: getToken(),
+            },
+            maxFileSize: 5 * 1024 * 1024, // 5M
+            allowedFileTypes: ["image/*"],
+            customInsert(res, insertFn) {
+              if (res.code === 5200) {
+                insertFn(res.data.url, "", res.data.url);
+              }
+            },
+          },
+        },
+      },
       mode: "default", // or 'simple',
       // 图片上传
       uploadImgSwiper: {
@@ -217,7 +290,6 @@ export default {
         }
       });
     },
-
     handleSelect() {
       console.log(this.activeName);
     },
@@ -231,8 +303,6 @@ export default {
     },
     handleRemove(file, fileList) {
       console.log(file);
-      // let idx = this.fileList.findIndex((item) => item.uid == file.uid)
-      // this.fileList.splice(idx, 1)
     },
     submitForm() {
       let _this = this;
@@ -303,7 +373,6 @@ export default {
     dragEnd(data) {
       const imgList = data.imgStr;
       const type = data.type;
-      // this.addGoodsForm[type] = imgList;
       this.editImg[type] = imgList;
     },
   },
@@ -327,45 +396,283 @@ export default {
 </script>
 
 <style scoped lang="less">
-@import url("../../../styles/page-public.less");
-.app-title {
-  width: 80% !important;
+@primary-color: #ca0c16;
+@secondary-color: #f5f6f7;
+@border-color: #e4e6eb;
+@text-primary: #222226;
+@text-secondary: #515767;
+@text-light: #86909c;
+
+.wrap {
+  min-height: 100vh;
+  background-color: @secondary-color;
+}
+
+.page-header {
+  padding: 12px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid @border-color;
+  background: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    .divider {
+      width: 1px;
+      height: 24px;
+      background: @border-color;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 500;
+      color: @text-primary;
+    }
+  }
+
+  .header-right {
+    display: flex;
+    gap: 12px;
+
+    .ant-btn {
+      height: 36px;
+      padding: 0 20px;
+
+      &.ant-btn-primary {
+        background: @primary-color;
+        border-color: @primary-color;
+
+        &:hover {
+          background: darken(@primary-color, 10%);
+          border-color: darken(@primary-color, 10%);
+        }
+      }
+    }
+  }
+}
+
+.article-form-container {
+  max-width: 1200px;
   margin: 0 auto;
+  padding: 40px;
+  background: #fff;
+  border-radius: 8px;
+  margin-top: 24px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
 }
-.myMenu_item {
-  display: block;
-  height: 100%;
-  text-align: center;
+
+.title-input {
+  margin-bottom: 20px;
+  font-size: 36px;
+  font-weight: 500;
+  border: none;
+  padding: 0;
+  margin: 0 0 40px;
+  color: @text-primary;
+
+  &::placeholder {
+    color: @text-light;
+  }
+
+  &:focus {
+    box-shadow: none;
+  }
 }
-.el-menu--horizontal > .el-menu-item {
-  width: 25%;
+
+.article-meta-wrapper {
+  background: @secondary-color;
+  border-radius: 8px;
+  padding: 16px 24px;
+  margin-bottom: 32px;
+
+  .meta-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      background: @primary-color;
+      border-radius: 50%;
+    }
+
+    span {
+      font-size: 15px;
+      font-weight: 500;
+      color: @text-primary;
+    }
+  }
 }
-/* 内容样式 */
-.content {
-  width: 80%;
-  margin: 0 auto;
-  padding: 20px 0;
-  background-color: #fff;
+
+.article-meta {
+  display: flex;
+  gap: 16px;
+
+  .category-select {
+    width: 200px;
+
+    :deep(.ant-select-selector) {
+      background: transparent;
+      border-color: @border-color;
+
+      &:hover {
+        background: #fff;
+        border-color: @primary-color;
+      }
+    }
+  }
+
+  .tags-select {
+    width: 400px;
+
+    :deep(.ant-select-selector) {
+      background: transparent;
+      border-color: @border-color;
+
+      &:hover {
+        background: #fff;
+        border-color: @primary-color;
+      }
+
+      .ant-select-selection-item {
+        background: fade(@primary-color, 8%);
+        border: none;
+        border-radius: 4px;
+        color: darken(@primary-color, 10%);
+      }
+    }
+  }
 }
-.mySubmit {
-  margin: 20px 0;
+
+.cover-upload {
+  margin-bottom: 32px;
+  background: @secondary-color;
+  padding: 24px;
+  border-radius: 8px;
+
+  .upload-title {
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    span {
+      color: @text-primary;
+      font-weight: 500;
+    }
+
+    .upload-tip {
+      color: @text-light;
+      font-size: 12px;
+      font-weight: normal;
+    }
+  }
+
+  .upload-area {
+    background: #fff;
+    border: 2px dashed @border-color;
+    border-radius: 4px;
+
+    &:hover {
+      border-color: @primary-color;
+    }
+
+    .upload-content {
+      padding: 32px;
+      text-align: center;
+      color: @text-secondary;
+
+      .anticon {
+        font-size: 28px;
+        margin-bottom: 12px;
+        color: @text-light;
+      }
+    }
+  }
 }
-.saveGoods {
-  margin-left: 9%;
+
+.editor-container {
+  border: 1px solid @border-color;
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 24px 0 32px;
+  background: #fff;
 }
-.mycasc .el-radio__inner {
-  top: -18px;
-  left: -19px;
-  border-radius: 0;
-  border: 0;
-  width: 170px;
-  height: 34px;
-  background: transparent;
-  cursor: pointer;
-  box-sizing: border-box;
-  position: absolute;
+
+.editor-toolbar {
+  border-bottom: 1px solid @border-color;
+  background: #fff;
+  padding: 8px;
 }
-.mycasc .el-radio__input .is-checked .el-radio__inner {
-  background: transparent;
+
+.editor-content {
+  min-height: 600px;
+  overflow-y: auto;
+  padding: 32px 40px;
+  line-height: 1.8;
+  color: @text-primary;
+}
+
+.publish-settings {
+  background: @secondary-color;
+  border-radius: 8px;
+  padding: 32px;
+
+  h3 {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 16px;
+    color: @text-primary;
+  }
+
+  .settings-content {
+    display: flex;
+    gap: 48px;
+  }
+
+  .setting-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    .setting-label {
+      color: @text-secondary;
+      min-width: 70px;
+    }
+
+    .ant-rate {
+      color: @primary-color;
+    }
+  }
+}
+
+:deep(.ant-input),
+:deep(.ant-select-selector),
+:deep(.ant-picker) {
+  border-radius: 4px;
+  border-color: @border-color;
+
+  &:hover,
+  &:focus {
+    border-color: @primary-color;
+  }
+}
+
+:deep(.ant-form-item-label) {
+  label {
+    font-size: 14px;
+    color: @text-secondary;
+  }
 }
 </style>
