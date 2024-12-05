@@ -39,6 +39,7 @@ export function downloadPicture(data) {
   return request({
     method: 'post',
     url: '/admin/platform/collect/taobao/link',
+    responseType: 'blob',
     data
   })
 }

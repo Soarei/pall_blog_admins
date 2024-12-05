@@ -28,8 +28,12 @@ service.interceptors.request.use(
 // response interceptor
 service.interceptors.response.use(
   response => {
+    console.log(response);
     const res = response.data
     let that = Vue.prototype
+    if (response.request.responseType == 'blob') {
+      return Promise.resolve(response)
+    }
     if (res.code != 5200) {
 
       that.$antmessage.error(res.message || '服务器开小差了')
@@ -48,7 +52,7 @@ service.interceptors.response.use(
       }
       return Promise.reject(new Error(res.message || 'Error'))
     } else {
-      return res
+      return Promise.resolve(res)
     }
   },
   error => {

@@ -225,10 +225,9 @@ export default {
     // 单品图片保存
     downloadPicture(record) {
       downloadPicture({
-        goodsUrl:
-          "https://detail.1688.com/offer/810728423894.html?offerId=810728423894&extStr=null&object_id=810728423894&object_type=offerAd&object_sub_type=normal&serverTrackId=gul_213e387517328465065631546e257d_810728423894_270074586&tpp_expodata=810728423894..213e387517328465065631546e257d..345d4976-2bc4-4207-b668-2cef68df49ff..1732846507..78....1007.38042.401979.0..businessType:..gul_213e387517328465065631546e257d_810728423894_270074586&uuid=b49953ef-a188-476e-b8ec-a1512c918f1c&traceId=213e387517328465065631546e257d&spm=a260k.home2024.recommendpart.6&_p_isad=1&cbu_ad_adgroup_id=1172603076&cbu_ad_sessionid=6b197f589d3eca09c270b77c72a0d664&_p_utentry_spm=a260k.home2024.recommendpart.6/other_objectId-810728423894--objectSubType-normal__obj_offerAd&_p_utentry_object_id=810728423894&_p_utentry_object_type=offerAd",
-      }).then((blob) => {
-        const url = window.URL.createObjectURL(blob);
+        goodsUrl: record.collectUrl,
+      }).then((res) => {
+        const url = window.URL.createObjectURL(res.data);
         const a = document.createElement("a");
         a.href = url;
         a.download = "files.zip";
