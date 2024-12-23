@@ -1,21 +1,21 @@
 <template>
   <div>
-    <searchForm
+    <!-- <searchForm
       :formOptions="formOptions"
       :needParams="needParams"
       btnItems="search, export, reset"
-    />
+    /> -->
   </div>
 </template>
 
 <script>
-import searchForm from '@/components/Antd/Search/index.vue'
+// import searchForm from '@/components/Antd/Search/index.vue'
 export default {
-  components:{
-    searchForm
+  components: {
+    // searchForm
   },
-  data(){
-    return{
+  data() {
+    return {
       formOptions: [
         {
           label: "用户名很长是是是", // label文字
@@ -75,22 +75,22 @@ export default {
           defaultValue: "", // 字段初始值
           placeholder: "请选择性别", // antd组件属性
           options: [],
-          url: 'http://rap2api.taobao.org/app/mock/270426/city',
-          methods: 'get',
+          url: "http://rap2api.taobao.org/app/mock/270426/city",
+          methods: "get",
           dicParamsList: [
             {
-              key: 'token'
+              key: "token",
             },
             {
-              key: 'bussinessId',
-              value: '324'
-            }
+              key: "bussinessId",
+              value: "324",
+            },
           ],
           filedName: {
-            label: 'name',
-            value: 'id'
+            label: "name",
+            value: "id",
           },
-          propsHttpRes: 'data',
+          propsHttpRes: "data",
           events: {
             // antd组件方法
             change(val) {
@@ -105,22 +105,22 @@ export default {
           defaultValue: [], // 字段初始值
           placeholder: "请选择性别", // antd组件属性
           options: [],
-          url: 'http://rap2api.taobao.org/app/mock/270426/getCascaderList',
-          methods: 'get',
+          url: "http://rap2api.taobao.org/app/mock/270426/getCascaderList",
+          methods: "get",
           dicParamsList: [
             {
-              key: 'token'
+              key: "token",
             },
             {
-              key: 'bussinessId',
-              value: '324'
-            }
+              key: "bussinessId",
+              value: "324",
+            },
           ],
           filedName: {
-            label: 'name',
-            value: 'id'
+            label: "name",
+            value: "id",
           },
-          propsHttpRes: 'data',
+          propsHttpRes: "data",
           events: {
             // antd组件方法
             change(val) {
@@ -145,7 +145,7 @@ export default {
           label: "发货日期", // label文字
           prop: "delieverDate", // 字段名
           type: "date-picker", // 指定antd组件
-          defaultValue: '', // 字段初始值
+          defaultValue: "", // 字段初始值
           placeholder: "请选择", // antd组件属性
           events: {
             // antd组件方法
@@ -155,12 +155,10 @@ export default {
           },
         },
       ],
-      needParams:{}
-    }
-  }
-}
+      needParams: {},
+    };
+  },
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

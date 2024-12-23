@@ -9,7 +9,6 @@
           :searchOptions="searchOptions"
           :renderButton="renderButton"
         ></SearchForm>
-        <a-button @click="handleAdd">添加</a-button>
         <!-- <Pagination v-show="total > 0" :total="total" :page.sync="listQuery.page" :size.sync="listQuery.size" @pagination="getList" /> -->
         <a-table
           :columns="columns"
@@ -17,14 +16,6 @@
           :scroll="{ x: 1000 }"
           rowKey="article_id"
         >
-          <!-- <template slot="article_cover" slot-scope="text, record">
-            <img
-              :src="record.article_cover"
-              alt=""
-              srcset=""
-              style="width: 50px; height: 50px"
-            />
-          </template> -->
           <template slot="recommend" slot-scope="text, record">
             <a-rate :value="record.level" disabled :count="3" />
           </template>
@@ -70,7 +61,7 @@
 import { getArticleList, delArticle } from "@/api/pall_article";
 import SearchBox from "../../components/searchBox";
 import CursorImage from "../../components/CursorImage";
-import SearchForm from "../../components/Antd/SearchForm.vue";
+import SearchForm from "../../components/Antd/CommonSearch/index.vue";
 // 引入添加修改商品组件
 import AddGoods from "./component/addGoods.vue";
 export default {

@@ -105,11 +105,7 @@ import {
   updateRolesAuth,
   distributeRoles,
 } from "@/api/menus/roles";
-import searchForm from "@/components/Antd/Search/index.vue";
 export default {
-  components: {
-    searchForm,
-  },
   filters: {
     statusFilter(status) {
       const statusMap = {

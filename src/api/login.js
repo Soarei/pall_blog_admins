@@ -9,7 +9,7 @@ export function pallRegister(data) {
 }
 
 // 登录接口
-export function pallLogin(data){
+export function pallLogin(data) {
   return request({
     url: '/admin/login',
     method: 'post',
